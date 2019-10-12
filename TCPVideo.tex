@@ -1,0 +1,750 @@
+\documentclass[mathserif]{beamer}
+%
+\usepackage{multimedia}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage{epsfig}
+\usepackage{color}
+\usepackage{ifthen}
+%            
+\usepackage{textcomp}
+\usepackage{graphics}
+\usepackage[absolute,overlay]{textpos}
+\usepackage[font=footnotesize,labelformat=empty,
+justification=raggedright, ]{caption}
+%\usepackage{animate}
+
+%\usepackage{movie15}
+
+%\usetheme{Warsaw}
+%\usepackage{media9}
+
+
+\usepackage{tikz}
+\usetikzlibrary{lindenmayersystems}
+% For references, footnoes
+\usepackage{biblatex}
+%\usepackage{bibentry}
+%\usepackage[style=verbose,backend=biber]{biblatex}
+%\addbibresource{./TCPVideo.bib}
+%	\bibliographystyle{plainnat}
+
+%\newcommand{\version}{short}
+\newcommand{\version}{long}
+\newcommand{\cond}[2]{\ifthenelse{\equal{\version}{#1}}{#2}{}}
+%
+\xdefinecolor{iktoverhead}{rgb}{0.8,1,0}
+\xdefinecolor{iktbottomline}{rgb}{0,0.3,0.6}
+\usecolortheme[named=black]{structure}
+\setbeamercolor{alerted text}{fg=olive}
+%
+\bibliography{./TCPVideo.bib}
+
+\setbeamertemplate{headline}{\hspace{9.5mm}\colouredline{iktoverhead!36}{\color{gray}
+		\hspace{9.9cm}\includegraphics[width=0.2\linewidth]{Logo_IKT_RGB}\hfill}}
+%
+\setbeamertemplate{footline}{\hspace{9.5mm}\colouredline{iktbottomline!14}{\color{gray}
+		\includegraphics[width=.2\linewidth]{luh_logo_rgb_0_80_155}
+		\hspace{40pt}\copyright{} Tilak Varisetty, Markus Fidler, Matthias Ueberheide, Marcus Magnor $\,\mid\,$ IKT LUH $\,\mid\,$ \insertframenumber/\inserttotalframenumber\hfill}}
+%
+\setbeamertemplate{frametitle}{
+	\vspace*{-5.5mm}
+	\hspace*{-8mm}
+	\insertframetitle}
+%\begin{filecontents}{./TCPVideo.bib}
+%	@inproceedings{Free-ViewPOint:2015:WIF:2733373.2806394,
+%		
+%		author = {Ueberheide, Matthias and Klose, Felix and Varisetty, Tilak and Fidler, Markus and Magnor, Marcus},
+%		
+%		title = {Web-based Interactive Free-Viewpoint Streaming: A Framework for High Quality Interactive Free Viewpoint Navigation},
+%		
+%		booktitle = {Procs. of the ACM International Conference on Multimedia},
+%		
+%		pages = {1031-1034},
+%		
+%		year={2015},
+%		
+%		month={Oct},
+%		
+%		note = {{Short} Paper},
+%		
+%	}
+%\end{filecontents}
+
+\title{\bf Client-side Bandwidth Estimation Technique for Adaptive Streaming of a Browser Based Free-Viewpoint Application}
+%\subtitle{IKT Latex Slides}
+\author{Tilak Varisetty}
+\institute{\includegraphics[width=.3\linewidth]{welfengarten}\\Institute of Communications Technology\\Leibniz Universit\"{a}t Hannover}
+\date{October 21, 2019}
+%
+
+\begin{document}
+	%
+	\maketitle
+	%
+	
+	\begin{frame}
+		\frametitle{Outline}
+		%
+		\tableofcontents
+		%
+	\end{frame}
+	%------------------------------------------------------------
+	%
+	\section{Interactive streaming}
+	%\tableofcontents[currentsection]
+	\begin{frame} {Rendering}
+		\only{Server-side}
+		\vspace{10pt}
+		\begin{columns}
+			%	\vspace{-10pt}
+			\begin{column}{1\linewidth}
+				
+				%      \begin{overprint}
+				%      \begin{figure}
+				%		\begin{center}
+				%			\includegraphics<1>[width=0.8\linewidth]{./Rendering/Rendering_Overview_serverside_v_2.pdf}
+				%		\end{center}
+				%	\end{figure}
+				%%	\end{column}
+				%
+				\begin{figure}
+					%%		\begin{column}{0.87\linewidth}
+					%			\begin{center}
+					%				\includegraphics<1>[width=0.8\linewidth]{./Rendering/Rendering_Overview_client_v3.pdf}
+					%			\end{center}
+					\includegraphics[width=0.9\linewidth]{./Rendering/Rendering_Overview_serverside_v_2.pdf}
+					%			\onslide<2>\includegraphics[width=0.9\linewidth]{./Rendering/Rendering_Overview_client_v4.pdf}
+				\end{figure}
+				%	\end{overprint}
+			\end{column}
+		\end{columns}
+		
+		
+	\end{frame}
+	%
+	\begin{frame} {Rendering}
+		\only{Client-side}
+		\vspace{10pt}
+		\begin{columns}
+			%	\vspace{-10pt}
+			\begin{column}{1\linewidth}
+				
+				%      \begin{overprint}
+				%      \begin{figure}
+				%		\begin{center}
+				%			\includegraphics<1>[width=0.8\linewidth]{./Rendering/Rendering_Overview_serverside_v_2.pdf}
+				%		\end{center}
+				%	\end{figure}
+				%%	\end{column}
+				%
+				\begin{figure}
+					%%		\begin{column}{0.87\linewidth}
+					%			\begin{center}
+					%				\includegraphics<1>[width=0.8\linewidth]{./Rendering/Rendering_Overview_client_v3.pdf}
+					%			\end{center}
+					\includegraphics[width=0.9\linewidth]{./Rendering/Rendering_Overview_client_v5.pdf}
+					%			\onslide<2>\includegraphics[width=0.9\linewidth]{./Rendering/Rendering_Overview_client_v4.pdf}
+				\end{figure}
+				%	\end{overprint}
+			\end{column}
+		\end{columns}
+		
+		\vspace{5mm}
+		Bandwidth demands and rate adaptation
+		
+		
+	\end{frame}
+	
+	
+	%\begin{frame} {Rendering}
+	%	\begin{itemize}
+	%\item Server-side \pause
+	%\item \textit{Reduces the BW} \pause
+	%\item \textit{Hybrid approach with image and depth based maps} \pause
+	%\item \textit{Thin clients/consumer browsers play} FVV \pause
+	%\item \textit{Only the view needs to be disclosed} (Not the source CAD model) \pause
+	%\item Client-side  \pause
+	%\item \textit{Needs powerful client to render the req. view} \pause
+	%\item \textit{Additional BW usage}
+	%\end{itemize}
+	%\end{frame}
+	
+	
+	
+	
+	
+	\subsection{FVV (Free View-point Video streaming)}
+	%\begin{frame}
+	%	\frametitle{FVV streaming}
+	%	\begin{center}
+	%		\movie[width=\textwidth,showcontrols=true]
+	%		{\includegraphics[width=0.5\textwidth]{screen_mouse.png}}{out_new-1.mp4} 
+	%	\end{center}
+	%\end{frame}
+	
+	
+	\subsection{Adaptive Streaming Techniques (ADS)}
+	\begin{frame}
+		\frametitle{DASH ADS}
+		Segmented based approach 
+\vspace{-4mm}
+			\begin{columns}
+			\begin{column}{0.9\linewidth}
+				\begin{center}
+					\includegraphics<1>[width=0.9\linewidth]{QoE_affects-crop.pdf}
+				\end{center}
+			\end{column}			
+		\end{columns}
+
+			s(t) = Length of the chunk \newline
+			N = Number of chunks 		\newline		n(t) = Network delay \newline 
+		    d(t) = Total delay = s(t)+n(t)+\textit{K}(N)xs(t)
+\vspace{0mm}
+			
+\begin{columns}
+	\begin{column}{0.9\linewidth}
+		\begin{center}
+			\hspace{5mm}\includegraphics<1>[width=0.9\linewidth]{./stateoftheart/Dash.pdf}
+		\end{center}
+	\end{column} 
+
+	%
+	%
+		%\vspace{10pt}		
+\end{columns}		
+		%
+\end{frame}
+	%------------------------------------------------------------
+	%
+	
+	
+	\section{State of the art}
+	
+	
+	
+	%\tableofcontents[currentsection]
+	
+	
+	\begin{frame} {Related work}
+		\begin{enumerate}
+
+			\item ADS of interactive free viewpoint
+			videos \vspace{0mm}	\footnotetext[1]{\tiny A. Vetro, T. Wiegand, and G. J. Sullivan, “Overview of the stereo
+				and multiview video coding extensions of the H.264/MPEG-4 AVC
+				standard,”  MMSys 2016.}
+			\pause  
+
+			\item Effective bandwidth measurement for dynamic adaptive
+			streaming \footnotetext[2]{\tiny J. M. Jeong and J. D. Kim, “Effective bandwidth measurement for dynamic adaptive
+				streaming over http,” ICOIN, 2015} \pause
+			
+			\item Delay components of adaptive video streaming  \footnotetext[3]{\tiny T. Lohmar, T. Einarsson, P. Fröjdh, F. Gabin, and M. Kampmann, “Dynamic
+				adaptive http streaming of live content,”  WoWMoM 2011}\pause
+			
+			\item Feasibility of using HTML5 browser stats  \footnotetext[4]{\tiny C. Concolato, J. Le Feuvre, and R. Bouqueau, “Usages of dash for rich media
+				services,” ACM 2011.}
+		\vspace{-4mm}
+		\end{enumerate}
+	\end{frame}
+	
+	\section{Bandwidth Estimation Algorithm}
+	\begin{frame}
+		\frametitle{Web-browser statistics}
+		\begin{itemize}
+			\item Data mining with Browser Stats \pause
+			\item HTML5 WHATWG  \pause   
+			\item Passive Bandwidth Estimation 	\footnotetext[1]{\tiny https://wiki.whatwg.org/wiki/Main{\_}Page}
+		\end{itemize}		
+	\end{frame}
+	                             
+	\begin{frame}
+		\frametitle{BWE Algorithm (BWA)}
+%		\begin{itemize}			
+%			\item webkitDecodedByteCount  \pause
+%			\item webkitDecodedFrameCount \pause 
+%			\item Bit Rate Estimation with EWMA  \pause 
+%						
+%					
+%		\end{itemize}
+	webkitDecodedByteCount used for reference bitrate calculation\newline
+	EWMA (Exponential Weighted Moving Average with $\delta$t = 1s) 				
+
+				\begin{columns}
+					\begin{column}{0.7\linewidth}
+						\begin{center}
+							\includegraphics<1>[width=0.9\linewidth]{./figures/video_quality_feedback_new-crop.pdf}
+						\end{center}
+					\end{column} 
+				
+
+				%\vspace{10pt}		
+				\end{columns}
+	\end{frame}
+
+
+		
+
+
+		
+	
+	\section{Experimental setup}
+		%\tableofcontents[currentsection]
+	\subsection{Free-viewpoint streaming application}
+	\begin{frame}
+		\frametitle{ FVV steaming with HTML5}
+		Linux server \newline
+		DASH FFmpeg encoder \newline
+		Shaka-Player on Google-Chrome
+		%
+		%
+		\begin{columns}
+			\begin{column}{0.47\linewidth}
+				\begin{overprint}
+					
+					%  				\hspace{+29.5cm}
+					\onslide<1>\includegraphics[width=0.9\linewidth]{./Exp_setup/exp_setup_ver_1_edited_1-crop.pdf}
+					\onslide<2>\includegraphics[width=0.9\linewidth]{./Exp_setup/exp_setup_ver_1_edited_2-crop.pdf}
+					\onslide<3>\includegraphics[width=0.9\linewidth]{./Exp_setup/exp_setup_ver_1_edited_3-crop.pdf}
+					\onslide<4>\includegraphics[width=0.9\linewidth]{./Exp_setup/exp_setup_ver_1_edited_4-crop.pdf}
+					\onslide<5>\includegraphics[width=0.9\linewidth]{./Exp_setup/exp_setup_ver_1_edited_5-crop.pdf}
+					\onslide<6>\includegraphics[width=0.9\linewidth]{./Exp_setup/exp_setup_ver_1_edited_6-crop.pdf}		
+					
+					%		 \begin{tikzpicture}[>=stealth,very thick,every node/.style={draw}]
+					
+					%		\end{tikzpicture}
+					
+				\end{overprint}
+			\end{column}
+		\end{columns}
+		
+		FFserver streaming server \newline
+		Lighttpd webserver\newline
+		%Google chrome running HTML5 without plugins
+	\end{frame}
+	
+	\subsection{Network Testbed}
+	\begin{frame}
+		\frametitle{Network testbed}
+		%
+		Emulab \newline
+		Dumbell Topology
+		%\only<2>{some text that appears}
+		%
+		\begin{columns}
+			
+			\begin{column}{0.67\linewidth}
+				\begin{center}
+					\includegraphics<1>[width=0.9\linewidth]{./Exp_setup/Network_testbed-crop.pdf}
+				\end{center}
+			\end{column}
+		\end{columns}
+		\vspace{10pt}
+		Ubuntu servers \newline
+		Delay node (FreeBSD)
+	\end{frame}
+	\subsection{Measurement Points}
+	\begin{frame}
+		\frametitle{Measurement points}
+		%
+		Source code logging facility on glrender, FFmpeg, FFserver \newline
+		Frame marking through chunk identifier and PTS
+		%	Resolution of $\mu$ sec (Rounded to msec) \newline
+		
+		%\only<2>{some text that appears}
+		%
+		\begin{columns}
+			
+			\begin{column}{0.47\linewidth}
+				\begin{center}
+					\includegraphics<1>[width=0.9\linewidth]{./figures/Measurement_points-crop.pdf}
+				\end{center}
+			\end{column}
+		\end{columns}
+		\vspace{10pt}
+		Data analysis, delay estimation from the logs
+	\end{frame}
+		
+	\section{Results}
+	\begin{frame}
+		\frametitle{ Experimental verification }
+Iperf UDP crosstraffic (CT)
+		\begin{columns}
+			\begin{column}{0.50\linewidth}
+				\begin{center}
+					\includegraphics<1>[width=0.9\linewidth]{./figures/CT_figure.pdf}
+					\captionof{figure}{Algorithm reacting to variations in CT}
+				\end{center}
+			\end{column}
+			\begin{column}{0.50\linewidth}
+				\begin{center}
+					\includegraphics<1>[width=0.9\linewidth]{./figures/decoded_data.pdf}
+				\captionof{figure}{Decoded Data on the client}
+				\end{center}
+			\end{column}
+		\end{columns}
+		\vspace{10pt}
+	
+		
+	\end{frame}
+	
+	
+	\begin{frame}
+		\frametitle{ DASH Analysis }
+		\begin{itemize}
+			\item Initial delays (C$\rightarrow$F) 
+			
+			\item Overhead
+			\item Delay-offset 
+			
+			
+		\end{itemize}
+		
+		\frametitle{Classification of delays}
+		\begin{columns}
+			
+			
+			
+			\begin{column}{0.45\linewidth}
+				\begin{center}
+					\includegraphics<1>[width=0.9\linewidth]{./figures/Measurement_points-crop.pdf}
+				\end{center}
+			\end{column}
+		\end{columns}
+		
+		
+		
+		
+	\end{frame}
+	
+	
+	%\begin{enumerate}
+	%%	\item Constant step heights
+	%%	\item Utilization = Bitrate/Max. TCP throughput
+	%%	\item Req. CWND = 12.6 KByte/1460 Byte (9 TCP segments) 
+	%%%	\item Varying step width
+	%%	\item RTT affects the magnitude of stack, blocking delay
+	%\end{enumerate}
+%	\begin{frame}{Impact of RTT on transfer delay}		
+%		\begin{columns}
+%			\begin{column}{0.75\linewidth}
+%				\begin{figure}
+%					\begin{center}
+%						\includegraphics[width=0.9\linewidth]{Results/pdf/RTT_Over_Delay/delay}
+%						\caption{Transfer delay distribution}				
+%					\end{center}
+%				\end{figure}
+%				
+%			\end{column}
+%		\end{columns}	
+%		\footnote{10FPS, 1\% loss, varying RTT}
+%	\end{frame}
+	%\end{figure}
+	\begin{frame}{DASH Evaluation}
+
+		\begin{columns}
+			
+			\begin{column}{0.39\linewidth}			
+
+					%\begin{center}
+						\includegraphics[width=0.9\linewidth]{./figures/initial_delay.pdf}
+						\captionof{figure}{Initial delay for GoP 1~sec and 30~fps}
+						
+					%\end{center}
+
+			\end{column}
+			
+			\begin{column}{0.39\linewidth}
+				%\begin{center}
+					\includegraphics<1>[width=0.9\linewidth]{./figures/overhead.pdf}
+					             \captionof{figure}{Overhead for 30~fps and different GoP}				
+				%\end{center}
+
+			\end{column}
+	\begin{column}{0.39\linewidth}
+		%\begin{center}
+			\includegraphics<1>[width=0.9\linewidth]{./figures/Delay_offset_to_edge.pdf}
+		\captionof{figure}{Delay offset (s)}				
+		%\end{center}
+	\end{column}
+\end{columns}
+
+\end{frame}
+	
+%	
+%	\begin{frame}{Impact of RTT on Stack delay}
+%		Utilization = Bitrate/Max. Greedy TCP throughput (From Iperf) \newline	
+%		%	$$T=MSS\timesC$$ \dfrac 1
+%		\textit{T} =$ {\frac{MSS}{RTT}}  \cdot \frac{C}{\sqrt{PL}} $ (Mathis et.al. formula)
+%		\begin{columns}
+%			\begin{column}{0.75\linewidth}
+%				\begin{figure}
+%					\begin{center}
+%						\includegraphics[width=0.9\linewidth]{Results/pdf/App_Delay/c_d+e_f_10fps}
+%						\caption{Stack delay distribution}
+%					\end{center}
+%				\end{figure}
+%			\end{column}	
+%		\end{columns}
+%		\vspace{-10pt}
+%		\footnote{Utilizations of 13.8, 28.2, and 39\% resp.}
+%	\end{frame}
+%	
+%	\begin{frame}{Loss-dependent Delay Probabilities}
+%		%	\begin{enumerate}
+%		%		\item Varying step heights 
+%		%		\item Constant step width
+%		%		\item Packetloss affects the magnitude of stack, blocking delay
+%		%	\end{enumerate}
+%		
+%		\begin{columns}
+%			\begin{column}{0.75\linewidth}
+%				\begin{figure}
+%					\begin{center}
+%						\includegraphics[width=0.9\linewidth]{Results/pdf/PL_Over_Delay/28RTT/delay1}
+%						\caption{Per-frame transfer delays}
+%					\end{center}
+%				\end{figure}
+%			\end{column}
+%		\end{columns}
+%	\end{frame}
+%	
+	
+%	\begin{frame}{CWND distribution for various packetloss}
+%		
+%		\begin{columns}
+%			\begin{column}{0.75\linewidth}			
+%				\begin{figure}
+%					\begin{center}
+%						\includegraphics[width=0.9\linewidth]{Results/pdf/PL_Over_CWND/28RTT/cwnd_cdf}
+%						\caption{CWND distribution}
+%						
+%					\end{center}
+%				\end{figure}
+%			\end{column}
+%		\end{columns}
+%		\footnote{10FPS, varying packetloss, 28ms RTT}	
+%	\end{frame}
+	
+%	
+%	\begin{frame}{Stack delay for various packetloss}
+%		\begin{columns}
+%			\begin{column}{0.75\linewidth}
+%				\begin{figure}
+%					\begin{center}
+%						\includegraphics[width=0.9\linewidth]{Results/pdf/App_Delay/c_d+e_f_pl}
+%						\caption{Stack delay distribution}
+%					\end{center}
+%				\end{figure}
+%			\end{column}	
+%		\end{columns}
+%		
+%		\footnote{Utilizations of 20, 28.2, and 39.1\% resp.}
+%	\end{frame}
+	
+	
+%	\begin{frame}	{Adaptation of video parameters}
+%		
+%		Impact of frame rate
+%		%		\item Last TCP segment lost
+%		%		\item Affect on the tail delays distribution 
+%		%
+%		%		
+%		%	\end{enumerate}
+%		
+%		
+%		\begin{columns}
+%			\begin{column}{0.75\linewidth}
+%				\begin{figure}
+%					\begin{center}
+%						\includegraphics[width=0.9\linewidth]{Results/pdf/Framerate_Over_Delay/delay_14rtt}
+%						\caption{Per-frame transfer delays}
+%					\end{center}
+%				\end{figure}
+%			\end{column}
+%		\end{columns}
+%		\footnote{1\% loss, 14ms RTT }		
+%	\end{frame}
+	%\begin{frame}
+	%	
+	%\begin{columns}
+	%		\begin{column}{0.75\linewidth}			
+	%			\begin{figure}
+	%				\begin{center}
+	%					\includegraphics[width=0.9\linewidth]{Results/pdf/Framerate_Over_Delay/delay_28rtt}
+	%					\caption{CWND distribution}
+	%					
+	%				\end{center}
+	%			\end{figure}
+	%		\end{column}
+	%	\end{columns}
+	%			\footnote{1\% loss, 28ms RTT}		
+	%\end{frame}
+	
+%	\begin{frame}{Stack delays for various frame rates}
+%		\begin{columns}
+%			\begin{column}{0.75\linewidth}
+%				\begin{figure}
+%					\begin{center}
+%						
+%						\includegraphics[width=0.9\linewidth]{Results/pdf/App_Delay/c_d+e_f}
+%						\caption{Stack delay distribution}
+%						
+%					\end{center}
+%				\end{figure}
+%			\end{column}	
+%			
+%		\end{columns}
+%		\footnote{Utilizations of 28.2, 56.4, and 84.6\% resp.}		
+%	\end{frame}
+%	
+	
+%	\begin{frame}
+		%	\begin{enumerate}
+		%		\item Frame size
+		%		\item Varying step height
+		%		\item Smaller CWND required
+		%		\item Better delay performance for smaller video frame sizes
+		%	
+		%	\end{enumerate}
+%		\frametitle{Impact of video frame size}
+%		%	Impact of frame rate
+%		\begin{columns}
+%			\begin{column}{0.75\linewidth}
+%				\begin{figure}
+%					\begin{center}
+%						\includegraphics[width=0.9\linewidth]{Results/pdf/Videosize_over_Delay/delay_1}
+%						\caption{Per-frame transfer delays}
+%					\end{center}
+%				\end{figure}
+%			\end{column}
+%		\end{columns}
+%		\footnote{100\% frame size = 12.6 KByte}		
+%	\end{frame}
+%	
+%	\begin{frame} {CWND for different frame sizes}
+%		
+%		\begin{columns}
+%			\begin{column}{0.75\linewidth}			
+%				\begin{figure}
+%					\begin{center}
+%						\includegraphics[width=0.9\linewidth]{Results/pdf/Videosize_over_CWND/cwnd_cdf_1}
+%						\caption{CWND distribution}
+%						
+%					\end{center}
+%				\end{figure}
+%			\end{column}
+%		\end{columns}
+%	\end{frame}
+	
+	\begin{frame}
+		\frametitle{Conclusions and future directions}
+		\begin{itemize}
+			\item We propose a novel approach for an exclusive delay-sensitive application with non-segmented video delivery \pause
+			\item direct the trend towards non-segmented approaches with berowser statistics \pause
+			\item Proposed algorithm tested in varying network conditions  \pause
+			\item The implications from current work on video analytics \pause
+			\footnotetext[1]{\tiny J. Jiang, G. Ananthanarayanan, P. Bodik, S.
+				Sen, and I. Stoica. 2018. Chameleon: scalable adaptation of video
+				analytics. In Proceedings of the 2018 Conference of the ACM Special
+				Interest Group on Data Communication. ACM, 253–266}
+			\item Using feedback from the client to tune ffmpeg encoder on the fly
+			
+		\end{itemize}
+		
+		
+	\end{frame}
+	
+	% \begin{frame}{Bibliography}
+	% 	\begin{itemize}
+	% 		\item M. Ueberheide, F. Klose, T. Varisetty, M. Fidler, and M. Magnor,
+	% 		“Web-based interactive free-viewpoint streaming: A framework for high
+	% 		quality interactive free viewpoint navigation,” in Procs. of the ACM
+	% 		International Conference on Multimedia, Oct 2015, pp. 1031–1034,
+	% 		short Paper.
+	% 		
+	% 		\item R. Luebben and M. Fidler, “Service curve estimation-based characterization and evaluation
+	% 		of closed-loop flow control,” IEEE Trans. on Network and Service
+	% 		Management, vol. 14, no. 1, pp. 161–175, Mar. 2017.
+	% 		
+	% 		\item E. Brosh, S. A. Baset, V. Misra, D. Rubenstein, and H. Schulzrinne,
+	% 		“The delay-friendliness of TCP for real-time traffic,” IEEE/ACM Trans.
+	% 		on Networking, vol. 18, no. 5, pp. 1478–1491, Oct. 2010.
+	% 	\end{itemize}
+	% 	
+	% 	
+	% 	
+	% \end{frame}
+	% 
+	\begin{frame}{Q \& A}
+		
+		
+		\hspace{70pt}{\huge               Thank you!}
+	\end{frame}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	%
+	%------------------------------------------------------------
+	%
+	%\begin{frame}
+	%\frametitle{Pause}
+	%%
+	%Slide show pauses
+	%%
+	%\pause
+	%%
+	%and continues
+	%%
+	%\end{frame}
+	%
+	%------------------------------------------------------------
+	%
+	%\begin{frame}
+	%\frametitle{Overprint}
+	%%
+	%\begin{overprint}
+	%\begin{center}
+	%\includegraphics<1>[width=0.8\linewidth]{testfigure1}
+	%\includegraphics<2>[width=0.8\linewidth]{testfigure2}
+	%\end{center}
+	%\end{overprint}
+	%%
+	%\cond{short}{short version}
+	%\cond{long}{long version (is not much longer)}
+	%%
+	%\end{frame}
+	%%
+	%------------------------------------------------------------
+	%
+	%\begin{frame}{References}
+	%%	\bibliographystyle{amsalpha}
+	%	\bibliography{TCPVideo.bib}
+	%	
+	%\end{frame}
+	%\end{document}
+	
+	
+	%	\begin{frame}
+	%
+	%		Text text \footcite{Free-ViewPOint:2015:WIF:2733373.2806394}
+	%	\end{frame}
+	
+	%	\begin{frame}
+	%		\printbibliography
+	%	\end{frame} 
+	
+	
+	
+	
+\end{document} 
